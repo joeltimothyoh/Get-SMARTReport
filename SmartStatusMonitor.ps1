@@ -1,21 +1,21 @@
 <#
 # SmartStatusMonitor.ps1 - 
-# This script monitors and generates an email report regarding the SMART status of drives on a system. 
+# This script monitors and generates an email report regarding the SMART status of physical drives on the system. 
 # The email will include a warning when 1 or more drives return a SMART status other than 'OK'. 
 #>
 
-# Get info of all drives on system
-$Drive_Info = Get-WmiObject -Class Win32_DiskDrive
+# Get info of each physical drive on system
+$Physical_Drives_Info = Get-WmiObject -Class Win32_DiskDrive
 
-# Count the number of drives with a SMART status other than 'OK'
-$faulty_drives = $Drive_Info | Where-Object { $_.Status -ne 'OK'} | Measure-Object
+# Count the number of physical drives with a SMART status other than 'OK'
+$faulty_drives = $Physical_Drives_Info | Where-Object { $_.Status -ne 'OK'} | Measure-Object
 
-# Generate a table containing all drives with their respective capacities and SMART statuses
-$smart_status_report = $Drive_Info | 
+# Generate a table containing each physical drive with their respective capacities and SMART statuses
+$smart_status_report = $Physical_Drives_Info | 
     Format-Table DeviceID, 
-    # Caption                   # Use Caption for drive model name 
-    @{ Name = "Size (GB)"; Expression = { [math]::Round($_.Size/1GB,1) } },
-    @{ Name = "SMART Status"; Expression = { $_.Status }; Alignment="right"; }  
+                 #Caption,          # Use Caption for drive model name 
+                 @{ Name = "Size (GB)"; Expression = { [math]::Round($_.Size/1GB,1) } },
+                 @{ Name = "SMART Status"; Expression = { $_.Status }; Alignment="right"; }
 
 # Include path to email config file
 . "C:/scripts/email/config.ps1"
@@ -33,15 +33,17 @@ if ($faulty_drives.Count -gt 0) {
 
 # Format body of report
 $body = @()
+$body += "<pre><p style='font-family: Courier New;'>"
 $body += "Smart Status Check as of: $(Get-Date)"
 $body += $smart_status_report
+$body += "</p></pre>"
 
 # Print report to console
 $title + "`n"
 $body
 
 # Email the report
-Send-Mailmessage -to $email_to -subject $title -Body ( $body | Out-String ) -SmtpServer $smtp_server -from $smtp_email -Port $smtp_port -UseSsl -Credential $credential
+Send-Mailmessage -to $email_to -subject $title -Body ( $body | Out-String ) -SmtpServer $smtp_server -from $smtp_email -Port $smtp_port -UseSsl -Credential $credential -BodyAsHtml
 
 # Debug
 Write-Host "Faulty drive count: $($faulty_drives.Count)"
