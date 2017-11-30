@@ -19,7 +19,7 @@ function Get-SMART-Report {
     Param()
 
     # Get info of each physical drive on system
-    $Physical_Drives_Info = Get-WmiObject -Class Win32_DiskDrive
+    $Physical_Drives_Info = Get-WmiObject -Class Win32_DiskDrive | Sort-Object DeviceID
 
     # Count the number of physical drives with a SMART status other than 'OK'
     $faulty_drives = $Physical_Drives_Info | Where-Object { $_.Status -ne 'OK'} | Measure-Object
