@@ -6,13 +6,34 @@ This script monitors and generates an email report regarding the SMART status of
 The email will include a warning when 1 or more drives return a SMART status other than 'OK'.
 
 .EXAMPLE
-Get-SMART-Report.ps1
-
-.NOTES
+.\Get-SMART-Report.ps1
 
 #>
 
-Param()
+########################   Email Configuration   ########################
+
+# SMTP Server
+$smtp_server = 'smtp.server.com'
+
+# SMTP port (usually 465 or 587)
+$smtp_port = '587'
+
+# SMTP email address
+$smtp_email = 'sender@address.com'
+
+# SMTP password
+$smtp_password = 'Password'
+
+# Destination email address
+$email_to = 'recipient@address.com'
+
+# Source email address (usually matching SMTP email address)
+$email_from = 'sender@address.com'
+
+# Email title prefix
+$email_title_prefix = '[MachineName]'
+
+#########################################################################
 
 function Get-SMART-Report {
 
@@ -29,14 +50,11 @@ function Get-SMART-Report {
                     @{ Name = "Size (GB)"; Expression = { [math]::Round($_.Size/1GB,1) } },
                     @{ Name = "SMART Status"; Expression = { $_.Status }; Alignment="right"; }
 
-    # Include path to email config file
-    . "C:/scripts/email/config.ps1"
-
-    # Define module name for report
+    # Module name to appear in title
     $module_name = "[Get-SMART-Report]"
 
     # Format title of report
-    $title = "$email_title_tag $module_name "
+    $title = "$module_name "
     if ($faulty_drives.Count -gt 0) {
         $title += "$($faulty_drives.Count) Drive(s) may be faulty/failing."
     } else {
@@ -52,15 +70,22 @@ function Get-SMART-Report {
     Write-Output $title
     Write-Output $smart_status_report
 
-    # Format body of email
-    $body = @()
-    $body += "<pre><p style='font-family: Courier New; font-size: 11px;'>"
-    $body += $smart_status_report
-    $body += "</p></pre>"
+    # Format title of email report
+    $email_title = "$email_title_prefix $title"
 
+    # Format body of email report
+    $email_body = @()
+    $email_body += "<pre><p style='font-family: Courier New; font-size: 11px;'>"
+    $email_body += $smart_status_report
+    $email_body += "</p></pre>"
+
+    # Secure credentials
+    $encrypted_password = $smtp_password | ConvertTo-SecureString -AsPlainText -Force
+    $credentials = New-Object System.Management.Automation.PSCredential( $smtp_email, $encrypted_password )
+    
     # Email the report
-    Send-Mailmessage -to $email_to -subject $title -Body ( $body | Out-String ) -SmtpServer $smtp_server -from $smtp_email -Port $smtp_port -UseSsl -Credential $credential -BodyAsHtml
-
+    Send-Mailmessage -to $email_to -subject $email_title -Body ( $email_body | Out-String ) -from $email_from -SmtpServer $smtp_server -Port $smtp_port -Credential $credentials -UseSsl -BodyAsHtml
+    
     # Debug
     Write-Host "Faulty drive count: $($faulty_drives.Count)"
 }
