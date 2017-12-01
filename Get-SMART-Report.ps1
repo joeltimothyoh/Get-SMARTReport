@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-This script monitors and generates an email report regarding the SMART status of physical drives on the system.
+Monitors and generates an email report regarding the SMART status of physical drives on the system.
 
 .DESCRIPTION
 The email will include a warning when one or more physical drives return a SMART status other than 'OK'.
@@ -10,7 +10,7 @@ The email will include a warning when one or more physical drives return a SMART
 
 #>
 
-########################   Email Configuration   ########################
+##########################   Email Settings   ###########################
 
 # SMTP Server
 $smtp_server = 'smtp.server.com'
