@@ -1,22 +1,20 @@
-# Get-SMART-Report.ps1 
+<#
+.SYNOPSIS
+This script monitors and generates an email report regarding the SMART status of physical drives on the system.
+
+.DESCRIPTION
+The email will include a warning when 1 or more drives return a SMART status other than 'OK'.
+
+.EXAMPLE
+Get-SMART-Report.ps1
+
+.NOTES
+
+#>
+
+Param()
 
 function Get-SMART-Report {
-    <#
-    .SYNOPSIS
-    This script monitors and generates an email report regarding the SMART status of physical drives on the system. 
-    # The email will include a warning when 1 or more drives return a SMART status other than 'OK'. 
-
-    .DESCRIPTION
-    Long description
-
-    .EXAMPLE
-    Get-SMART-Report
-
-    .NOTES
-    General notes
-    #>
-
-    Param()
 
     # Get info of each physical drive on system
     $Physical_Drives_Info = Get-WmiObject -Class Win32_DiskDrive | Sort-Object DeviceID
