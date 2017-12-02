@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-Monitors and generates an email report regarding the SMART status of physical drives on the system.
+Generates and emails a report regarding the SMART status of physical drives on the system.
 
 .DESCRIPTION
-The email will include a warning when one or more physical drives return a SMART status other than 'OK'.
+The report will warn when one or more physical drives return a SMART status other than 'OK'.
 
 .EXAMPLE
 .\Get-SMART-Report.ps1
@@ -87,7 +87,7 @@ function Get-SMART-Report {
     Send-Mailmessage -to $email_to -subject $email_title -Body ( $email_body | Out-String ) -from $email_from -SmtpServer $smtp_server -Port $smtp_port -Credential $credentials -UseSsl -BodyAsHtml
     
     # Debug
-    Write-Host "Faulty drive count: $($faulty_drives.Count)"
+    # Write-Host "Faulty drive count: $($faulty_drives.Count)"
 }
 
 # Call function
