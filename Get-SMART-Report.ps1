@@ -41,14 +41,16 @@ function Get-SMART-Report {
     $Physical_Drives_Info = Get-WmiObject -Class Win32_DiskDrive | Sort-Object DeviceID
 
     # Count the number of physical drives with a SMART status other than 'OK'
-    $faulty_drives = $Physical_Drives_Info | Where-Object { $_.Status -ne 'OK'} | Measure-Object
+    $faulty_drives = $Physical_Drives_Info | Where-Object { $_.Status -ne 'OK'}
 
     # Generate a table containing each physical drive with their respective capacities and SMART statuses
     $smart_status_table = $Physical_Drives_Info | 
-        Format-Table DeviceID, 
-                    #Caption,          # Use Caption for drive model name 
-                    @{ Name = "Size (GB)"; Expression = { [math]::Round($_.Size/1GB,1) } },
-                    @{ Name = "SMART Status"; Expression = { $_.Status }; Alignment="right"; }
+        Format-Table DeviceID,                                                                    # DeviceID for physical drive unique identifier
+                     Model,                                                                       # Model for physical drive model name
+                   # MediaType,                                                                   # MediaType for physical drive type
+                   # SerialNumber,                                                                # SerialNumber for physical drive serial number
+                     @{ Name = "Size (GB)"; Expression = { [math]::Round($_.Size/1GB,1) } },      # Size for physical drive storage capacity
+                     @{ Name = "SMART Status"; Expression = { $_.Status }; Alignment="right" }    # Status for physical drive SMART status
 
     # Module name to appear in title
     $module_name = "[Get-SMART-Report]"
@@ -86,8 +88,6 @@ function Get-SMART-Report {
     # Email the report
     Send-Mailmessage -to $email_to -subject $email_title -Body ( $email_body | Out-String ) -from $email_from -SmtpServer $smtp_server -Port $smtp_port -Credential $credentials -UseSsl -BodyAsHtml
     
-    # Debug
-    # Write-Host "Faulty drive count: $($faulty_drives.Count)"
 }
 
 # Call function
