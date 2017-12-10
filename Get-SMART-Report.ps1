@@ -64,9 +64,10 @@ function Get-SMART-Report {
     }
 
     # Format body of report
-    $smart_status_report = @()
-    $smart_status_report += "Smart Status Check as of: $(Get-Date)"
-    $smart_status_report += $smart_status_table
+    $smart_status_report = @(
+        "Smart Status Check as of: $(Get-Date)"
+        $smart_status_table
+    )
 
     # Print report the stdout
     Write-Output $title
@@ -76,11 +77,12 @@ function Get-SMART-Report {
     $email_title = "$email_title_prefix $title"
 
     # Format body of email report
-    $email_body = @()
-    $email_body += "<pre><p style='font-family: Courier New; font-size: 11px;'>"
-    $email_body += $smart_status_report
-    $email_body += "</p></pre>"
-
+    $email_body = @(
+        "<pre><p style='font-family: Courier New; font-size: 11px;'>"
+        $smart_status_report
+        "</p></pre>"
+    )
+    
     # Secure credentials
     $encrypted_password = $smtp_password | ConvertTo-SecureString -AsPlainText -Force
     $credentials = New-Object System.Management.Automation.PSCredential( $smtp_email, $encrypted_password )
