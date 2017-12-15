@@ -10,4 +10,4 @@ Fill in email settings within the .ps1 script. Then manually run, or set the scr
 `.\Get-SMART-Report.ps1`
 
 ## Compatibility
-This script currently only works with Windows.
+Get-SMART-Report currently only works with Windows.

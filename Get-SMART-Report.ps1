@@ -24,11 +24,11 @@ $smtp_email = 'sender@address.com'
 # SMTP password
 $smtp_password = 'Password'
 
-# Destination email address
-$email_to = 'recipient@address.com'
-
 # Source email address (usually matching SMTP email address)
 $email_from = 'sender@address.com'
+
+# Destination email address
+$email_to = 'recipient@address.com'
 
 # Email title prefix
 $email_title_prefix = '[MachineName]'
@@ -74,7 +74,12 @@ function Get-SMART-Report {
     Write-Output $smart_status_report
 
     # Format title of email report
-    $email_title = "$email_title_prefix $title"
+    $email_title_prefix = $email_title_prefix.Trim()
+    if ($email_title_prefix -ne "") {
+        $email_title = "$email_title_prefix $title"
+    } else {
+        $email_title = $title
+    }
 
     # Format body of email report
     $email_body = @(
