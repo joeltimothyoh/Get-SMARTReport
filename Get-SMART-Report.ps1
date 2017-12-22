@@ -3,7 +3,7 @@
 Generates a report regarding the SMART status of physical drives on the system.
 
 .DESCRIPTION
-The generated report will include a warning when one or more physical drives return a SMART status other than 'OK'.
+The report will include a warning when one or more physical drives return a SMART status other than 'OK'.
 
 .EXAMPLE
 Powershell "C:\scripts\Get-SMART-Report\Get-SMART-Report.ps1"
@@ -115,7 +115,7 @@ function Get-SMART-Report {
         From = $email_from
         To = $email_to
         Subject = $email_title
-        Body = ( $email_body | Out-String )
+        Body = ($email_body | Out-String)
         BodyAsHtml = $true
     }
 

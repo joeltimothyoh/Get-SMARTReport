@@ -2,10 +2,10 @@
 Generates a report regarding the SMART status of physical drives on the system.
 
 ## Description
-The generated report will include a warning when one or more physical drives return a SMART status other than 'OK'.
+The report will include a warning when one or more physical drives return a SMART status other than 'OK'.
 
 ## Usage
-Get-SMART-Report can be used as a script or module. The script includes emailing of the report as an additional feature.
+Get-SMART-Report can be used as a script or module. The script includes the ability to email reports.
 
 ### Script
 * Specify email settings within the `Get-SMART-Report.ps1` script.
@@ -18,13 +18,13 @@ Get-SMART-Report can be used as a script or module. The script includes emailing
 ## Scheduling
 The `Get-SMART-Report.ps1` script can be scheduled to automatically notify on the status of drives on a system.
 * Set up the script to be run.
-* Add an *Action* for the task with the following settings:
-  * Action: `Start a program`
-  * Program/script: `Powershell`
-  * Add arguments (optional): `C:\path\to\script.ps1`
+* In *Task Scheduler*, create a task with an *Action* with the following settings:
+  * *Action*: `Start a program`
+  * *Program/script*: `Powershell`
+  * *Add arguments (optional)*: `C:\path\to\script.ps1`
 * Repeat the steps for each script that is to be scheduled.
 
-Refer to Microsoft's documentation or guides on using *Task Scheduler*.
+Refer to Microsoft's documentation or guides for further help on using *Task Scheduler*.
 
 ## Parameters
 

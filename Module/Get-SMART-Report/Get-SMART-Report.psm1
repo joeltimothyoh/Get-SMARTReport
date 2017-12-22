@@ -4,7 +4,7 @@ function Get-SMART-Report {
     Generates a report regarding the SMART status of physical drives on the system.
 
     .DESCRIPTION
-    The generated report will include a warning when one or more physical drives return a SMART status other than 'OK'.
+    The report will include a warning when one or more physical drives return a SMART status other than 'OK'.
 
     .EXAMPLE
     Powershell "C:\scripts\Get-SMART-Report\Get-SMART-Report.ps1"
