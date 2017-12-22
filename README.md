@@ -5,18 +5,20 @@ Generates a report regarding the SMART status of physical drives on the system.
 The report will include a warning when one or more physical drives return a SMART status other than 'OK'.
 
 ## Usage
-Get-SMART-Report can be used as a script or module. The script includes the ability to email reports.
+Get-SMART-Report can be used as a script or module. Scripts allow for greater portability and isolation, while modules allow for greater accessibility, scalability and upgradability.
+
+The `Get-SMART-Report.ps1` script has the additional ability to email reports.
 
 ### Script
 * Specify email settings within the `Get-SMART-Report.ps1` script.
-* Run the script to get a report and have it emailed.
+* Run the script to get a report and send it via email.
 
 ### Module
 * Install the `Get-SMART-Report.psm1` module. Refer to Microsoft's documentation on installing PowerShell modules.
 * Call the module via `Get-SMART-Report` in PowerShell to get a report.
 
 ## Scheduling
-The `Get-SMART-Report.ps1` script can be scheduled to automatically notify on the status of drives on a system.
+The `Get-SMART-Report.ps1` script can be scheduled to periodically notify on the operational status of physical drives on the system.
 * Set up the script to be run.
 * In *Task Scheduler*, create a task with an *Action* with the following settings:
   * *Action*: `Start a program`
@@ -29,6 +31,8 @@ Refer to Microsoft's documentation or guides for further help on using *Task Sch
 ## Parameters
 
 ```
+Get-SMART-Report [<CommonParameters>]
+
 PARAMETERS
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,

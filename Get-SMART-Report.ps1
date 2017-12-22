@@ -62,7 +62,7 @@ function Get-SMART-Report {
         @{ Name = "Size (GB)"; Expression = { [math]::Round($_.Size/1GB,1) } },      # Size for physical drive storage capacity
         @{ Name = "SMART Status"; Expression = { $_.Status }; Alignment="right" }    # Status for physical drive SMART status
 
-    # Trim the new lines in the formatted table
+    # Trim newlines in the formatted table
     $smart_status_table = ($smart_status_table | Out-String).Trim()
 
     # Module name to appear in title
