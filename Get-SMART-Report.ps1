@@ -1,13 +1,20 @@
 <#
 .SYNOPSIS
-Generates and emails a report regarding the SMART status of physical drives on the system.
+Generates a report regarding the SMART status of physical drives on the system.
 
 .DESCRIPTION
-The report will warn when one or more physical drives return a SMART status other than 'OK'.
+The generated report will include a warning when one or more physical drives return a SMART status other than 'OK'.
 
 .EXAMPLE
-.\Get-SMART-Report.ps1
+Powershell "C:\scripts\Get-SMART-Report\Get-SMART-Report.ps1"
+Runs the Get-SMART-Report.ps1 script in an instance of PowerShell.
 
+.EXAMPLE
+Get-SMART-Report >> "C:\logs\smart-report.log"
+Runs the Get-SMART-Report module, appending the output to the specified log file.
+
+.LINK
+https://github.com/joeltimothyoh/Get-SMART-Report
 #>
 
 ##########################   Email Settings   ###########################
@@ -37,6 +44,9 @@ $email_title_prefix = '[MachineName]'
 
 function Get-SMART-Report {
 
+    [CmdletBinding()]
+    Param()
+
     # Get info of each physical drive on system
     $Physical_Drives_Info = Get-WmiObject -Class Win32_DiskDrive | Sort-Object DeviceID
 
@@ -44,13 +54,16 @@ function Get-SMART-Report {
     $faulty_drives = $Physical_Drives_Info | Where-Object { $_.Status -ne 'OK'}
 
     # Generate a table containing each physical drive with their respective capacities and SMART statuses
-    $smart_status_table = $Physical_Drives_Info | 
-        Format-Table DeviceID,                                                                    # DeviceID for physical drive unique identifier
-                     Model,                                                                       # Model for physical drive model name
-                   # MediaType,                                                                   # MediaType for physical drive type
-                   # SerialNumber,                                                                # SerialNumber for physical drive serial number
-                     @{ Name = "Size (GB)"; Expression = { [math]::Round($_.Size/1GB,1) } },      # Size for physical drive storage capacity
-                     @{ Name = "SMART Status"; Expression = { $_.Status }; Alignment="right" }    # Status for physical drive SMART status
+    $smart_status_table = $Physical_Drives_Info | Format-Table `
+        DeviceID,                                                                    # DeviceID for physical drive unique identifier
+        Model,                                                                       # Model for physical drive model name
+      # MediaType,                                                                   # MediaType for physical drive type
+      # SerialNumber,                                                                # SerialNumber for physical drive serial number
+        @{ Name = "Size (GB)"; Expression = { [math]::Round($_.Size/1GB,1) } },      # Size for physical drive storage capacity
+        @{ Name = "SMART Status"; Expression = { $_.Status }; Alignment="right" }    # Status for physical drive SMART status
+
+    # Trim the new lines in the formatted table
+    $smart_status_table = ($smart_status_table | Out-String).Trim()
 
     # Module name to appear in title
     $module_name = "[Get-SMART-Report]"
@@ -72,6 +85,7 @@ function Get-SMART-Report {
     # Print report the stdout
     Write-Output $title
     Write-Output $smart_status_report
+    Write-Output "-"
 
     # Format title of email report
     $email_title_prefix = $email_title_prefix.Trim()
@@ -87,15 +101,32 @@ function Get-SMART-Report {
         $smart_status_report
         "</p></pre>"
     )
-    
-    # Secure credentials
+
+    # Secure credential
     $encrypted_password = $smtp_password | ConvertTo-SecureString -AsPlainText -Force
-    $credentials = New-Object System.Management.Automation.PSCredential( $smtp_email, $encrypted_password )
-    
+    $credential = New-Object System.Management.Automation.PSCredential( $smtp_email, $encrypted_password )
+
+    # Define Send-Mailmessage parameters
+    $emailprm = @{
+        SmtpServer = $smtp_server
+        Port = $smtp_port
+        UseSsl = $true
+        Credential = $credential
+        From = $email_from
+        To = $email_to
+        Subject = $email_title
+        Body = ( $email_body | Out-String )
+        BodyAsHtml = $true
+    }
+
     # Email the report
-    Send-Mailmessage -to $email_to -subject $email_title -Body ( $email_body | Out-String ) -from $email_from -SmtpServer $smtp_server -Port $smtp_port -Credential $credentials -UseSsl -BodyAsHtml
-    
+    try {
+        Send-Mailmessage @emailprm -ErrorAction Stop
+    } catch {
+        Write-Output "Failed to send email. Reason: $($_.Exception.Message)"
+    }
+
 }
 
-# Call function
+# Call main function
 Get-SMART-Report
