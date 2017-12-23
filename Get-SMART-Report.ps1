@@ -82,7 +82,7 @@ function Get-SMART-Report {
         $smart_status_table
     )
 
-    # Print report the stdout
+    # Print report to stdout
     Write-Output $title
     Write-Output $smart_status_report
     Write-Output "-"

@@ -20,7 +20,7 @@ The `Get-SMART-Report.ps1` script has the additional ability to email reports.
 ## Scheduling
 The `Get-SMART-Report.ps1` script can be scheduled to periodically notify on the operational status of physical drives on the system.
 * Set up the script to be run.
-* In *Task Scheduler*, create a task with an *Action* with the following settings:
+* In *Task Scheduler*, create a task with the following *Action*:
   * *Action*: `Start a program`
   * *Program/script*: `Powershell`
   * *Add arguments (optional)*: `C:\path\to\script.ps1`
