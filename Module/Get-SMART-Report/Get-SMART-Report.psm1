@@ -1,4 +1,4 @@
-function Get-SMART-Report {
+﻿function Get-SMART-Report {
     <#
     .SYNOPSIS
     Generates a report regarding the SMART status of physical drives on the system.

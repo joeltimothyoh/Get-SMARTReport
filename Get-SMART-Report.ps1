@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Generates a report regarding the SMART status of physical drives on the system.
 
@@ -97,9 +97,9 @@ function Get-SMART-Report {
 
     # Format body of email report
     $email_body = @(
-        "<pre><p style='font-family: Courier New; font-size: 11px;'>"
+        "<html><pre style='font-family: Courier New; font-size: 11px;'>"
         $smart_status_report
-        "</p></pre>"
+        "</pre></html>"
     )
 
     # Secure credential
