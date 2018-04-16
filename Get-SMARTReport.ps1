@@ -6,15 +6,15 @@ Generates a report regarding the SMART status of physical drives on the system.
 The report will include a warning when one or more physical drives return a SMART status other than 'OK'.
 
 .EXAMPLE
-Powershell "C:\scripts\Get-SMART-Report\Get-SMART-Report.ps1"
-Runs the Get-SMART-Report.ps1 script in an instance of PowerShell.
+Powershell "C:\scripts\Get-SMARTReport\Get-SMARTReport.ps1"
+Runs the Get-SMARTReport.ps1 script in an instance of PowerShell.
 
 .EXAMPLE
-Get-SMART-Report >> "C:\logs\smart-report.log"
-Runs the Get-SMART-Report module, appending the output to the specified log file.
+Get-SMARTReport >> "C:\logs\smart-report.log"
+Runs the Get-SMARTReport module, appending the output to the specified log file.
 
 .LINK
-https://github.com/joeltimothyoh/Get-SMART-Report
+https://github.com/joeltimothyoh/Get-SMARTReport
 #>
 
 ##########################   Email Settings   ###########################
@@ -42,7 +42,7 @@ $email_title_prefix = '[MachineName]'
 
 #########################################################################
 
-function Get-SMART-Report {
+function Get-SMARTReport {
 
     [CmdletBinding()]
     Param()
@@ -66,7 +66,7 @@ function Get-SMART-Report {
     $smart_status_table = ($smart_status_table | Out-String).Trim()
 
     # Module name to appear in title
-    $module_name = "[Get-SMART-Report]"
+    $module_name = "[Get-SMARTReport]"
 
     # Format title of report
     $title = "$module_name "
@@ -129,4 +129,4 @@ function Get-SMART-Report {
 }
 
 # Call main function
-Get-SMART-Report
+Get-SMARTReport

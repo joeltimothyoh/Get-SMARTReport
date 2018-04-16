@@ -1,4 +1,4 @@
-# Get-SMART-Report
+# Get-SMARTReport
 
 Generates a report regarding the SMART status of physical drives on the system.
 
@@ -8,23 +8,23 @@ The report will include a warning when one or more physical drives return a SMAR
 
 ## Usage
 
-Get-SMART-Report can be used as a script or module. Scripts allow for greater portability and isolation, while modules allow for greater accessibility, scalability and upgradability.
+Get-SMARTReport can be used as a script or module. Scripts allow for greater portability and isolation, while modules allow for greater accessibility, scalability and upgradability.
 
-The `Get-SMART-Report.ps1` script has the additional ability to email reports.
+The `Get-SMARTReport.ps1` script has the additional ability to email reports.
 
 ### Script
 
-* Specify email settings within the `Get-SMART-Report.ps1` script.
+* Specify email settings within the `Get-SMARTReport.ps1` script.
 * Run the script to get a report and send it via email.
 
 ### Module
 
-* Install the `Get-SMART-Report.psm1` module. Refer to Microsoft's documentation on installing PowerShell modules.
-* Call the module via `Get-SMART-Report` in PowerShell to get a report.
+* Install the `Get-SMARTReport.psm1` module. Refer to Microsoft's documentation on installing PowerShell modules.
+* Call the module via `Get-SMARTReport` in PowerShell to get a report.
 
 ## Scheduling
 
-The `Get-SMART-Report.ps1` script can be scheduled to periodically notify on the operational status of physical drives on the system.
+The `Get-SMARTReport.ps1` script can be scheduled to periodically notify on the operational status of physical drives on the system.
 
 * Set up the script to be run.
 * In *Task Scheduler*, create a task with the following *Action*:
@@ -38,7 +38,7 @@ Refer to Microsoft's documentation or guides for further help on using *Task Sch
 ## Parameters
 
 ```
-Get-SMART-Report [<CommonParameters>]
+Get-SMARTReport [<CommonParameters>]
 
 PARAMETERS
     <CommonParameters>
@@ -52,23 +52,23 @@ PARAMETERS
 
 #### Example 1
 
-Runs the `Get-SMART-Report.ps1` script in an instance of PowerShell.
+Runs the `Get-SMARTReport.ps1` script in an instance of PowerShell.
 
 ```
-Powershell "C:\scripts\Get-SMART-Report\Get-SMART-Report.ps1"
+Powershell "C:\scripts\Get-SMARTReport\Get-SMARTReport.ps1"
 ```
 
 #### Example 2
 
-Runs the `Get-SMART-Report` module, appending the output to the specified log file.
+Runs the `Get-SMARTReport` module, appending the output to the specified log file.
 
 ```
-Get-SMART-Report >> "C:\logs\smart-report.log"
+Get-SMARTReport >> "C:\logs\smart-report.log"
 ```
 
 ## Security
 
-Unverified scripts are restricted from running on Windows by default. In order to use Get-SMART-Report, you will need to allow the execution of unverified scripts. To do so, open PowerShell as an *Administrator*. Then run the command:
+Unverified scripts are restricted from running on Windows by default. In order to use Get-SMARTReport, you will need to allow the execution of unverified scripts. To do so, open PowerShell as an *Administrator*. Then run the command:
 
 ```
 Set-ExecutionPolicy Unrestricted -Force
