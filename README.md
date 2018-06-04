@@ -37,7 +37,7 @@ Refer to Microsoft's documentation or guides for further help on using *Task Sch
 
 ## Parameters
 
-```
+```powershell
 Get-SMARTReport [<CommonParameters>]
 
 PARAMETERS
@@ -54,7 +54,7 @@ PARAMETERS
 
 Runs the `Get-SMARTReport.ps1` script in an instance of PowerShell.
 
-```
+```powershell
 Powershell "C:\scripts\Get-SMARTReport\Get-SMARTReport.ps1"
 ```
 
@@ -62,21 +62,21 @@ Powershell "C:\scripts\Get-SMARTReport\Get-SMARTReport.ps1"
 
 Runs the `Get-SMARTReport` module, appending the output to the specified log file.
 
-```
+```powershell
 Get-SMARTReport >> "C:\logs\smart-report.log"
 ```
 
 ## Security
 
-Unverified scripts are restricted from running on Windows by default. In order to use Get-SMARTReport, you will need to allow the execution of unverified scripts. To do so, open PowerShell as an *Administrator*. Then run the command:
+Unverified scripts are restricted from running on Windows by default. In order to use `Get-SMARTReport`, you will need to allow the execution of unverified scripts. To do so, open PowerShell as an *Administrator*. Then run the command:
 
-```
+```powershell
 Set-ExecutionPolicy Unrestricted -Force
 ```
 
 If you wish to revert the policy, run the command:
 
-```
+```powershell
 Set-ExecutionPolicy Undefined -Force
 ```
 
